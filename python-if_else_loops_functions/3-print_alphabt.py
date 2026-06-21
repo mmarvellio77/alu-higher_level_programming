@@ -1,2 +1,2 @@
 #!/usr/bin/python3
-print(*(chr(i) for i in range(97, 123) if chr(i) != "q" and chr(i) != "e"), sep="", end="")
+print(("{}" * 24).format(*(chr(i) for i in range(97, 123) if chr(i) != "q" and chr(i) != "e")), end="")
