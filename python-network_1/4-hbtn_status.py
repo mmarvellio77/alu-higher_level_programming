@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Fetches https://intranet.hbtn.io/status using requests and displays the response body."""
+"""Fetches https://intranet.hbtn.io/status and displays the body."""
 import requests
 
 
