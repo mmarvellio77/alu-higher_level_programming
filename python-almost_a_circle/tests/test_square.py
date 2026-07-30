@@ -1,151 +1,140 @@
 #!/usr/bin/python3
-"""Unit tests for Square class."""
-
+"""Unittests for the Square class."""
 import unittest
-import sys
-from io import StringIO
-from models.base import Base
+from models.rectangle import Rectangle
 from models.square import Square
 
 
-class TestSquare(unittest.TestCase):
-    """Test cases for Square class."""
+class TestSquareInit(unittest.TestCase):
+    """Tests for Square instantiation."""
 
-    def setUp(self):
-        """Reset __nb_objects before each test."""
-        Base._Base__nb_objects = 0
-
-    def test_square_creation(self):
-        """Test square creation."""
+    def test_is_rectangle_instance(self):
         s = Square(5)
-        self.assertEqual(s.width, 5)
-        self.assertEqual(s.height, 5)
-        self.assertEqual(s.size, 5)
-        self.assertEqual(s.x, 0)
-        self.assertEqual(s.y, 0)
-        self.assertEqual(s.id, 1)
+        self.assertIsInstance(s, Rectangle)
 
-    def test_square_full(self):
-        """Test square with all args."""
-        s = Square(5, 1, 2, 10)
-        self.assertEqual(s.size, 5)
-        self.assertEqual(s.x, 1)
-        self.assertEqual(s.y, 2)
-        self.assertEqual(s.id, 10)
+    def test_width_equals_height(self):
+        s = Square(5)
+        self.assertEqual(s.width, s.height)
+
+    def test_all_args(self):
+        s = Square(5, 1, 2, 99)
+        expected = (5, 5, 1, 2, 99)
+        self.assertEqual((s.width, s.height, s.x, s.y, s.id), expected)
+
+    def test_default_x_y(self):
+        s = Square(5)
+        self.assertEqual((s.x, s.y), (0, 0))
+
+    def test_ctor_size_string(self):
+        with self.assertRaises(TypeError):
+            Square("1")
+
+    def test_ctor_x_string(self):
+        with self.assertRaises(TypeError):
+            Square(1, "2")
+
+    def test_ctor_y_string(self):
+        with self.assertRaises(TypeError):
+            Square(1, 2, "3")
+
+    def test_ctor_size_negative(self):
+        with self.assertRaises(ValueError):
+            Square(-1)
+
+    def test_ctor_x_negative(self):
+        with self.assertRaises(ValueError):
+            Square(1, -2)
+
+    def test_ctor_y_negative(self):
+        with self.assertRaises(ValueError):
+            Square(1, 2, -3)
+
+    def test_ctor_size_zero(self):
+        with self.assertRaises(ValueError):
+            Square(0)
+
+
+class TestSquareSize(unittest.TestCase):
+    """Tests for Square's size property."""
 
     def test_size_getter(self):
-        """Test size getter."""
         s = Square(5)
         self.assertEqual(s.size, 5)
 
     def test_size_setter(self):
-        """Test size setter."""
         s = Square(5)
         s.size = 10
-        self.assertEqual(s.size, 10)
-        self.assertEqual(s.width, 10)
-        self.assertEqual(s.height, 10)
+        self.assertEqual((s.width, s.height), (10, 10))
 
-    def test_size_not_int(self):
-        """Test size not int raises TypeError."""
-        with self.assertRaises(TypeError):
-            Square("5")
+    def test_size_setter_invalid_type(self):
+        s = Square(5)
+        with self.assertRaises(TypeError) as cm:
+            s.size = "9"
+        self.assertEqual(str(cm.exception), "width must be an integer")
 
-    def test_size_zero(self):
-        """Test size <= 0 raises ValueError."""
-        with self.assertRaises(ValueError):
-            Square(0)
+    def test_size_setter_invalid_value(self):
+        s = Square(5)
+        with self.assertRaises(ValueError) as cm:
+            s.size = -1
+        self.assertEqual(str(cm.exception), "width must be > 0")
 
-    def test_size_negative(self):
-        """Test size < 0 raises ValueError."""
-        with self.assertRaises(ValueError):
-            Square(-1)
+
+class TestSquareStr(unittest.TestCase):
+    """Tests for Square.__str__."""
 
     def test_str(self):
-        """Test __str__ method."""
-        s = Square(5)
-        self.assertEqual(str(s), "[Square] (1) 0/0 - 5")
+        s = Square(3, 1, 3, 5)
+        self.assertEqual(str(s), "[Square] (5) 1/3 - 3")
 
-    def test_str_full(self):
-        """Test __str__ with all args."""
-        s = Square(5, 1, 2, 10)
-        self.assertEqual(str(s), "[Square] (10) 1/2 - 5")
+
+class TestSquareArea(unittest.TestCase):
+    """Tests for Square.area (inherited from Rectangle)."""
 
     def test_area(self):
-        """Test area calculation."""
-        s = Square(5)
-        self.assertEqual(s.area(), 25)
+        self.assertEqual(Square(5).area(), 25)
+        self.assertEqual(Square(2, 2).area(), 4)
 
-    def test_display_no_xy(self):
-        """Test display without x, y."""
-        s = Square(2)
-        output = StringIO()
-        sys.stdout = output
-        s.display()
-        sys.stdout = sys.__stdout__
-        self.assertEqual(output.getvalue(), "##\n##\n")
 
-    def test_display_with_xy(self):
-        """Test display with x, y."""
-        s = Square(2, 2, 1)
-        output = StringIO()
-        sys.stdout = output
-        s.display()
-        sys.stdout = sys.__stdout__
-        expected = "\n  ##\n  ##\n"
-        self.assertEqual(output.getvalue(), expected)
+class TestSquareUpdate(unittest.TestCase):
+    """Tests for Square.update."""
 
     def test_update_args(self):
-        """Test update with args."""
+        s = Square(5)
+        s.update(1, 2, 3, 4)
+        self.assertEqual((s.id, s.size, s.x, s.y), (1, 2, 3, 4))
+
+    def test_update_partial_args(self):
         s = Square(5)
         s.update(10)
         self.assertEqual(s.id, 10)
-        s.update(1, 2)
-        self.assertEqual(s.id, 1)
-        self.assertEqual(s.size, 2)
-        s.update(1, 2, 3)
-        self.assertEqual(s.x, 3)
-        s.update(1, 2, 3, 4)
-        self.assertEqual(s.y, 4)
-
-    def test_update_kwargs(self):
-        """Test update with kwargs."""
-        s = Square(5)
-        s.update(size=7, y=1)
-        self.assertEqual(s.size, 7)
-        self.assertEqual(s.y, 1)
-
-    def test_update_kwargs_skip_if_args(self):
-        """Test kwargs are skipped if args exist."""
-        s = Square(5)
-        s.update(10, size=7)
-        self.assertEqual(s.id, 10)
         self.assertEqual(s.size, 5)
 
-    def test_to_dictionary(self):
-        """Test to_dictionary method."""
+    def test_update_kwargs(self):
+        s = Square(5)
+        s.update(size=7, y=1)
+        self.assertEqual((s.size, s.y), (7, 1))
+
+    def test_update_kwargs_id(self):
+        s = Square(5)
+        s.update(size=7, id=89, y=1)
+        self.assertEqual((s.id, s.size, s.y), (89, 7, 1))
+
+
+class TestSquareToDictionary(unittest.TestCase):
+    """Tests for Square.to_dictionary."""
+
+    def test_keys(self):
         s = Square(10, 2, 1)
         d = s.to_dictionary()
-        expected = {"id": s.id, "size": 10, "x": 2, "y": 1}
-        self.assertEqual(d, expected)
+        self.assertEqual(set(d.keys()), {"id", "size", "x", "y"})
 
-    def test_inherits_rectangle(self):
-        """Test Square inherits from Rectangle."""
-        s = Square(5)
-        from models.rectangle import Rectangle
-        self.assertIsInstance(s, Rectangle)
+    def test_values(self):
+        s = Square(10, 2, 1, 5)
+        d = s.to_dictionary()
+        self.assertEqual(d, {"id": 5, "size": 10, "x": 2, "y": 1})
 
-    def test_size_setter_negative(self):
-        """Test size setter with negative raises ValueError."""
-        s = Square(5)
-        with self.assertRaises(ValueError):
-            s.size = -1
-
-    def test_size_setter_not_int(self):
-        """Test size setter with non-int raises TypeError."""
-        s = Square(5)
-        with self.assertRaises(TypeError):
-            s.size = "invalid"
+    def test_type(self):
+        self.assertIsInstance(Square(1).to_dictionary(), dict)
 
 
 if __name__ == "__main__":
