@@ -12,6 +12,7 @@ Programming** — Web scraping project.
 | `2-statuscode.js`    | Prints the status code of a GET request as `code: <status code>` using `request`      |
 | `3-starwars_title.js`| Prints the title of the Star Wars film matching the given movie id                    |
 | `4-starwars_count.js`| Prints the number of films where Wedge Antilles (character id 18) is present           |
+| `5-request_store.js` | Fetches a URL and stores the response body in a utf-8 encoded file                       |
 
 ## Setup
 
@@ -39,4 +40,7 @@ $ ./3-starwars_title.js 5
 Attack of the Clones
 $ ./4-starwars_count.js https://swapi-api.alx-tools.com/api/films
 3
+$ ./5-request_store.js https://loripsum.net/api loripsum
+$ cat loripsum
+<p>Lorem ipsum dolor sit amet, ...</p>
 ```
