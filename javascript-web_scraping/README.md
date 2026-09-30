@@ -11,6 +11,7 @@ Programming** — Web scraping project.
 | `1-writeme.js`       | Writes the second argument as utf-8 to the file given as the first argument            |
 | `2-statuscode.js`    | Prints the status code of a GET request as `code: <status code>` using `request`      |
 | `3-starwars_title.js`| Prints the title of the Star Wars film matching the given movie id                    |
+| `4-starwars_count.js`| Prints the number of films where Wedge Antilles (character id 18) is present           |
 
 ## Setup
 
@@ -36,4 +37,6 @@ $ ./3-starwars_title.js 1
 A New Hope
 $ ./3-starwars_title.js 5
 Attack of the Clones
+$ ./4-starwars_count.js https://swapi-api.alx-tools.com/api/films
+3
 ```
