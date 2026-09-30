@@ -5,10 +5,17 @@ Programming** — Web scraping project.
 
 ## Files
 
-| File             | Description                                                                          |
-| ---------------- | ------------------------------------------------------------------------------------ |
-| `0-readme.js`    | Reads the file given as the first argument as utf-8 and prints it, or the error object |
-| `1-writeme.js`   | Writes the second argument as utf-8 to the file given as the first argument            |
+| File                 | Description                                                                          |
+| -------------------- | ------------------------------------------------------------------------------------ |
+| `0-readme.js`        | Reads the file given as the first argument as utf-8 and prints it, or the error object |
+| `1-writeme.js`       | Writes the second argument as utf-8 to the file given as the first argument            |
+| `2-statuscode.js`    | Prints the status code of a GET request as `code: <status code>` using `request`      |
+
+## Setup
+
+```console
+$ npm install request
+```
 
 ## Usage
 
@@ -20,4 +27,8 @@ Error: ENOENT: no such file or directory, open 'doesntexist'
 $ ./1-writeme.js my_file.txt "Python is cool"
 $ cat my_file.txt; echo ""
 Python is cool
+$ ./2-statuscode.js https://alu-intranet.hbtn.io/status
+code: 200
+$ ./2-statuscode.js https://alu-intranet.hbtn.io/doesnt_exist
+code: 404
 ```
