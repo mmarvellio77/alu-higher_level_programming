@@ -13,6 +13,7 @@ Programming** — Web scraping project.
 | `3-starwars_title.js`| Prints the title of the Star Wars film matching the given movie id                    |
 | `4-starwars_count.js`| Prints the number of films where Wedge Antilles (character id 18) is present           |
 | `5-request_store.js` | Fetches a URL and stores the response body in a utf-8 encoded file                       |
+| `6-completed_tasks.js`| Prints the number of completed todos per user id, omitting users with none               |
 
 ## Setup
 
@@ -43,4 +44,7 @@ $ ./4-starwars_count.js https://swapi-api.alx-tools.com/api/films
 $ ./5-request_store.js https://loripsum.net/api loripsum
 $ cat loripsum
 <p>Lorem ipsum dolor sit amet, ...</p>
+$ ./6-completed_tasks.js https://jsonplaceholder.typicode.com/todos
+{ '1': 11, '2': 8, '3': 7, '4': 6, '5': 12,
+  '6': 6, '7': 9, '8': 11, '9': 8, '10': 12 }
 ```
